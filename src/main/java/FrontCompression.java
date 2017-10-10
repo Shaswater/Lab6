@@ -41,11 +41,17 @@ public class FrontCompression {
             return "";
         }
 
-        /*
-         * Complete this function.
-         */
+        String[] corpusArr = corpus.split("\n");
+        String compressedCorpus = "";
+        String previousWord = "";
+        for (int i = 0; i < corpusArr.length; i++) {
+            int commonCount = longestPrefix(corpusArr[i], previousWord);
+            String compressedWord = commonCount + " " + corpusArr[i].substring(commonCount) + "\n";
+            compressedCorpus += compressedWord;
+            previousWord = corpusArr[i];
+        }
 
-        return "";
+        return compressedCorpus;
     }
 
     /**
@@ -67,8 +73,23 @@ public class FrontCompression {
         /*
          * Complete this function.
          */
+        String[] corpusArr = corpus.split("\n");
+        String decompressedCorpus = "";
+        String previousWord = "";
+        for (int i = 0; i < corpusArr.length; i++) {
+            String[] line = corpusArr[i].split(" ");
+            int common = Integer.parseInt(line[0]);
 
-        return "";
+            String prefix = "";
+            if (previousWord.length() != 0) {
+                prefix = previousWord.substring(0, common);
+            }
+            decompressedCorpus += prefix + line[1] + "\n";
+            previousWord = prefix + line[1];
+        }
+
+        return decompressedCorpus;
+
     }
 
     /**
@@ -82,7 +103,17 @@ public class FrontCompression {
         /*
          * Complete this function.
          */
-        return 0;
+        int length = 0;
+        int i = 0;
+        int j = 0;
+
+        while (i < firstString.length() && j < secondString.length()
+                && firstString.charAt(i) == secondString.charAt(j)) {
+            length++;
+            i++;
+            j++;
+        }
+        return length;
     }
 
     /**
@@ -109,6 +140,7 @@ public class FrontCompression {
 
         String originalWords = words;
         String compressedWords = compress(words);
+        //System.out.println(compressedWords);
         String decompressedWords = decompress(compressedWords);
 
         if (decompressedWords.equals(originalWords)) {
